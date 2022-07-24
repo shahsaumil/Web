@@ -10,21 +10,21 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  @Input() card: Card = {
-    card_no: "",
-    card_type: "",
-    fromDate: new Date()
+  @Input() inputcard: Card = {
+    id: 0,
+    card: "",
+    cardType: "",
+    cvc: "",
+    monthOfExpiry: "",
+    yearOfExpiry: "",
+    date: new Date()
   }
 
 
   constructor(private cardService: CardService) {
   }
 
-  ngOnInit(): void {
-    if (localStorage.getItem("card_no")) {
-      this.card.card_no = localStorage.getItem("card_no");
-    }
-  }
+ 
 
 
   regex_message: any = ""
@@ -32,7 +32,22 @@ export class AppComponent implements OnInit {
   err: boolean = false;
   title = 'form';
   format = new RegExp('[0-9]+$');
+  cards:Card[] = [];
 
+  ngOnInit(): void {
+    if (localStorage.getItem("card")) {
+      // this.inputcard.card = localStorage.getItem("card");
+    }
+    this.cardService.getCreditCard().subscribe(res=>{
+      if(res){
+        this.cards = res;
+        console.log(res);
+      }
+    }, err=>{
+      console.log(err.error);
+    })
+    
+  }
   onKey(e: any) {
     if (e.target.value) {
       var card = e.target.value;
@@ -43,7 +58,7 @@ export class AppComponent implements OnInit {
     if (!this.format.test(card)) {
       this.err = true;
       this.regex_message = "Please enter digits from 0 to 9 only!";
-      this.card.card_type = "";
+      this.inputcard.cardType = "";
     }
     else {
       this.err = false;
@@ -52,23 +67,23 @@ export class AppComponent implements OnInit {
 
 
     if (card.charAt(0) == '4') {
-      this.card.card_type = "Visa Card detetected.";
+      this.inputcard.cardType = "Visa Card detetected.";
     }
     else if (card.charAt(0) == '5') {
-      this.card.card_type = "Master Card detetected.";
+      this.inputcard.cardType = "Master Card detetected.";
     }
     else if (card.substring(0, 2) == '37') {
-      this.card.card_type = "American Express Card detetected.";
+      this.inputcard.cardType = "American Express Card detetected.";
     }
     else {
-      this.card.card_type = "";
+      this.inputcard.cardType = "";
     }
 
 
     if (card.length < 13 || card.length > 16) {
       this.err = true;
       this.error_message = "Enter Valid Card Number";
-      this.card.card_type = "";
+      this.inputcard.cardType = "";
     }
     else {
 
@@ -77,19 +92,21 @@ export class AppComponent implements OnInit {
       if (!this.format.test(card)) {
         this.err = true;
         this.regex_message = "Please enter digits from 0 to 9 only!";
-        this.card.card_type = "";
+        this.inputcard.cardType = "";
       }
       else {
         this.err = false;
         this.regex_message = "";
-        localStorage.setItem("card_no", this.card.card_no);
+        localStorage.setItem("card", this.inputcard.card);
       }
 
     }
   }
 
   submit() {
-    this.cardService.addCreditCard(this.card).subscribe(res => {
+    // if(this.inputcard.card!="" && this.inputcard.cvc!="" && this.inputcard.yearOfExpiry!="" && 
+    //   this.inputcard.cardType!="" && this.inputcard.monthOfExpiry!="" )
+    this.cardService.addCreditCard(this.inputcard).subscribe(res => {
       console.log(res);
     },
       err => {

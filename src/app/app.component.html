@@ -1,20 +1,46 @@
 <div class="container">
   
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>
-        <mat-icon>credit_card</mat-icon>Credit Card:
-      </mat-label>
-      <input  matInput type="text" name="card_no" matInput [(ngModel)]="card.card_no" (keyup)="onKey($event)" />
-    </mat-form-field>
-    <div *ngIf="err">
-      <ul>
-        <li *ngIf="regex_message">{{regex_message}}</li>
-        <li *ngIf="error_message">{{error_message}}</li>
-      </ul>
-    </div>
-    <div>
-      <article> {{card.card_type}}</article>
-    </div>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>
+      <mat-icon>credit_card</mat-icon>Credit Card:
+    </mat-label>
+    <input  matInput type="text" name="card" matInput [(ngModel)]="inputcard.card" (keyup)="onKey($event)" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>
+      <mat-icon>credit_card</mat-icon>Month of Expiry:
+    </mat-label>
+    <input  matInput type="text" name="card" matInput [(ngModel)]="inputcard.monthOfExpiry" (keyup)="onKey($event)" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>
+      <mat-icon>credit_card</mat-icon>Year of Expiry:
+    </mat-label>
+    <input  matInput type="text" name="card" matInput [(ngModel)]="inputcard.yearOfExpiry" (keyup)="onKey($event)" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>
+      <mat-icon>credit_card</mat-icon>CVC:
+    </mat-label>
+    <input  matInput type="text" name="card" matInput [(ngModel)]="inputcard.cvc" (keyup)="onKey($event)" />
+  </mat-form-field>
+  <button (click)="submit()">
+Submit
+  </button>
+  <div *ngIf="err">
+    <ul>
+      <li *ngIf="regex_message">{{regex_message}}</li>
+      <li *ngIf="error_message">{{error_message}}</li>
+    </ul>
+  </div>
+  <div>
+    <article> {{inputcard.cardType}}</article>
+  </div>
 
+
+  <h1> Cards from database</h1>
+  <div *ngIf="cards.length>0">
+    {{cards | json}}
+  </div>
 
 </div>

@@ -1,5 +1,9 @@
 export interface Card {
-    card_no: any,
-    card_type?: string,
-    fromDate: Date
+    id: number,
+    card: string,
+    cardType: string,
+    cvc: string,
+    monthOfExpiry: string,
+    yearOfExpiry: string,
+    date: Date   
 }

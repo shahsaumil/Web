@@ -12,6 +12,10 @@ export class CardService {
   constructor(private http: HttpClient) { }
 
   addCreditCard(request:Card) : Observable<any>{
-    return this.http.post(this.request_url + "/card",request, {observe:'response'});
+    console.log(request);
+    return this.http.post(this.request_url + "/cards",request, {observe:'response'});
+  }
+  getCreditCard():Observable<Card[]>{
+    return this.http.get<Card[]>(this.request_url + "/getcards");
   }
 }
